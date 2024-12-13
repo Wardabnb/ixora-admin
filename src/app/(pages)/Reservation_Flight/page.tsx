@@ -1,21 +1,23 @@
 "use client";
-import { TabsDemo } from "@/components/tabs";
+
+import { useEffect, useState } from "react";
 import { TabsFlight } from "@/components/tabsFlight";
-import React, { useState } from "react";
 
 type Props = {};
 
-const page = (props: Props) => {
+const Page = (props: Props) => {
   const [flightsData, setFlightsData] = useState<string | null>(null);
 
-  // Assurez-vous de vérifier si la valeur est `null`
-  const savedFlights = localStorage.getItem("reservationFlight");
+  useEffect(() => {
+    // Vérification côté client pour accéder à localStorage
+    const savedFlights = localStorage.getItem("reservationFlight");
 
-  if (savedFlights !== null) {
-    setFlightsData(savedFlights); // Vous pouvez maintenant assigner la string
-  } else {
-    setFlightsData(null); // Sinon, définissez-le sur null
-  }
+    if (savedFlights !== null) {
+      setFlightsData(savedFlights); // Assignez la valeur récupérée de localStorage
+    } else {
+      setFlightsData(null); // Si rien n'est trouvé, définissez à null
+    }
+  }, []); // Le tableau vide [] garantit l'exécution seulement après le premier rendu
 
   return (
     <div className="mt-5">
@@ -24,4 +26,4 @@ const page = (props: Props) => {
   );
 };
 
-export default page;
+export default Page;
