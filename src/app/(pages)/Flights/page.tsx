@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -68,8 +68,10 @@ const page = (props: Props) => {
     mutate({
       FlightId: flight._id,
       airplane: AirplaneRef.current?.value!,
+      // @ts-ignore
       price: PriceRef.current?.value!,
       departure: DepartureRef.current?.value!,
+      // @ts-ignore
       image: file,
       arrive: ArriveRef.current?.value!,
       from: FromRef.current?.value!,
