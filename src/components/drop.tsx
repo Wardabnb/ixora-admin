@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 type ImageDropUploadProps = {
   onImageSelect: (file: File | null) => void;
@@ -17,14 +17,6 @@ const ImageDropUpload = ({ onImageSelect }: ImageDropUploadProps) => {
     }
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    if (file) {
-      setSelectedImage(file);
-      onImageSelect(file); // Pass image to parent
-    }
-  };
-
   const handleDragOver = (event: React.DragEvent) => {
     event.preventDefault();
   };
@@ -36,7 +28,6 @@ const ImageDropUpload = ({ onImageSelect }: ImageDropUploadProps) => {
       className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex items-center justify-center cursor-pointer hover:border-blue-500 transition"
     >
       <input
-        ref={ImageRef}
         id="image"
         className="col-span-3"
         type="file"
