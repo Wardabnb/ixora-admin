@@ -1,3 +1,4 @@
+"use client";
 import { TabsDemo } from "@/components/tabs";
 import { TabsFlight } from "@/components/tabsFlight";
 import React, { useState } from "react";
