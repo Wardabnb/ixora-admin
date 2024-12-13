@@ -47,14 +47,16 @@ const page = (props: Props) => {
   const [file, setFile] = useState<File | null>(null);
   const [flightsData, setFlightsData] = useState<string | null>(null);
 
-  // Assurez-vous de vérifier si la valeur est `null`
-  const savedFlights = localStorage.getItem("flights");
+  useEffect(() => {
+    // Vérification côté client pour accéder à localStorage
+    const savedFlights = localStorage.getItem("reservationFlight");
 
-  if (savedFlights !== null) {
-    setFlightsData(savedFlights); // Vous pouvez maintenant assigner la string
-  } else {
-    setFlightsData(null); // Sinon, définissez-le sur null
-  }
+    if (savedFlights !== null) {
+      setFlightsData(savedFlights); // Assignez la valeur récupérée de localStorage
+    } else {
+      setFlightsData(null); // Si rien n'est trouvé, définissez à null
+    }
+  }, []); // Le tableau vide [] garantit l'exécution seulement après le premier rendu
 
   function FlightEdit(flight: any) {
     console.log("hello");
