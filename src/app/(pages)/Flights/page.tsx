@@ -49,7 +49,7 @@ const page = (props: Props) => {
 
   useEffect(() => {
     // Vérification côté client pour accéder à localStorage
-    const savedFlights = localStorage.getItem("reservationFlight");
+    const savedFlights = localStorage.getItem("Flights");
 
     if (savedFlights !== null) {
       setFlightsData(savedFlights); // Assignez la valeur récupérée de localStorage
