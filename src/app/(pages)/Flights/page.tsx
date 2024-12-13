@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Pagination,
@@ -34,12 +34,6 @@ const page = (props: Props) => {
   const searchParams = useSearchParams();
   const currentPage = searchParams.get("page") || "1";
   const { data: flights } = useGetFlights(currentPage);
-  if (typeof window !== "undefined") {
-    // Now it's safe to use localStorage
-    const data = localStorage.getItem("yourDataKey");
-    // Do something with data
-  }
-
   const numPages = 10;
   const { mutate } = useEditFlights();
   const { mutate: flightD } = useDeleteFlights();
@@ -51,6 +45,16 @@ const page = (props: Props) => {
   const FromRef = useRef<HTMLInputElement | null>(null);
   const ToRef = useRef<HTMLInputElement | null>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [flightsData, setFlightsData] = useState<string | null>(null);
+
+  // Assurez-vous de vérifier si la valeur est `null`
+  const savedFlights = localStorage.getItem("flights");
+
+  if (savedFlights !== null) {
+    setFlightsData(savedFlights); // Vous pouvez maintenant assigner la string
+  } else {
+    setFlightsData(null); // Sinon, définissez-le sur null
+  }
 
   function FlightEdit(flight: any) {
     console.log("hello");
