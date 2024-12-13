@@ -226,7 +226,7 @@ const page = (props: Props) => {
           ))}
         </div>
       </ScrollArea>
-      <Pagination className="mt-4">
+      {/* <Pagination className="mt-4">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
@@ -249,7 +249,7 @@ const page = (props: Props) => {
             />
           </PaginationItem>
         </PaginationContent>
-      </Pagination>
+      </Pagination> */}
     </div>
   );
 };
