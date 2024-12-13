@@ -3,20 +3,27 @@ import { useGetAdmin } from "@/api/user/user";
 import { Bell } from "lucide-react";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 type Props = {};
 
 const Navbar = (props: Props) => {
   const path = usePathname();
-  const admin = JSON.parse(localStorage.getItem("admin") || "[]");
-  console.log("admin", admin);
+  const [admin, setAdmin] = useState<any>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedAdmin = localStorage.getItem("admin");
+      if (storedAdmin) {
+        setAdmin(JSON.parse(storedAdmin));
+      }
+    }
+  }, []); // Run only once on component mount
 
   // Fonction pour formater le chemin d’accès en titre
   const formatPathToTitle = (path: string) => {
     return path
       .split("/")
-
       .filter(Boolean) // Supprime les parties vides
       .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
       .join(" > "); // Optionnel: utilise " > " pour séparer les parties du chemin
