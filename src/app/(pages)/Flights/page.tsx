@@ -1,12 +1,10 @@
 "use client";
-import { useGetStays } from "@/api/stays/get";
 import Image from "next/image";
 import React, { useRef, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -26,7 +24,6 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-
 import { useGetFlights } from "@/api/flights/get";
 import { useEditFlights } from "@/api/flights/edit";
 import { useDeleteFlights } from "@/api/flights/delete";
@@ -37,6 +34,11 @@ const page = (props: Props) => {
   const searchParams = useSearchParams();
   const currentPage = searchParams.get("page") || "1";
   const { data: flights } = useGetFlights(currentPage);
+  if (typeof window !== "undefined") {
+    // Now it's safe to use localStorage
+    const data = localStorage.getItem("yourDataKey");
+    // Do something with data
+  }
 
   const numPages = 10;
   const { mutate } = useEditFlights();
