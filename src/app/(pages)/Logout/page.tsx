@@ -5,10 +5,12 @@ import { redirect } from "next/navigation";
 
 const Page = () => {
   useEffect(() => {
-    // Cette fonction sera exécutée uniquement côté client
-    localStorage.removeItem("admin");
-    redirect("/login");
-  }, []); // Le tableau vide [] garantit que l'effet ne sera exécuté qu'une seule fois après le rendu initial
+    // Ensure this code only runs on the client side
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("admin");
+      redirect("/login");
+    }
+  }, []); // The effect only runs once after the initial render
 
   return <div></div>;
 };
