@@ -1,16 +1,20 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
-  // Ensure this code only runs on the client side
+  const router = useRouter();
 
-  localStorage.removeItem("admin");
-  redirect("/login");
+  useEffect(() => {
+    // Ensure this code only runs on the client side
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("admin");
+      router.push("/login");
+    }
+  }, []); // Run once on component mount
 
-  // The effect only runs once after the initial render
-
-  return <div></div>;
+  return <div>Redirecting...</div>;
 };
 
 export default Page;
