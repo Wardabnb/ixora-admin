@@ -1,56 +1,62 @@
 "use client";
+
 import React, { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useAddStaysMutation } from "@/api/stays/add";
-import { useDeleteStays } from "@/api/stays/delete";
 
-type Props = {};
-type ImageDropUploadProps = {
-  onImageSelect: (file: File | null) => void;
-};
-const page = ({ onImageSelect }: ImageDropUploadProps) => {
+const Page = () => {
   const { mutate } = useAddStaysMutation();
 
-  const NameRef = useRef<HTMLInputElement | null>(null);
-  const PriceRef = useRef<HTMLInputElement | null>(null);
-  const DescriptionRef = useRef<HTMLInputElement | null>(null);
-  const ImageRef = useRef<HTMLInputElement | null>(null);
-  const RantingRef = useRef<HTMLInputElement | null>(null);
-  const LocationRef = useRef<HTMLInputElement | null>(null);
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    if (file) {
-      setSelectedImage(file);
-      onImageSelect(file); // Pass image to parent
-    }
-  };
+  const nameRef = useRef<HTMLInputElement | null>(null);
+  const priceRef = useRef<HTMLInputElement | null>(null);
+  const descriptionRef = useRef<HTMLInputElement | null>(null);
+  const locationRef = useRef<HTMLInputElement | null>(null);
+  const ratingRef = useRef<HTMLInputElement | null>(null);
+
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+
   const handleDrop = (event: React.DragEvent) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (file && file.type.startsWith("image/")) {
       setSelectedImage(file);
-      onImageSelect(file); // Pass image to parent
     } else {
-      alert("Please drop an image file.");
+      alert("Please drop a valid image file.");
     }
   };
-  const [file, setFile] = useState<File | null>(null);
+
   const handleDragOver = (event: React.DragEvent) => {
     event.preventDefault();
   };
-  async function Submit() {
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (
+      !nameRef.current?.value ||
+      !priceRef.current?.value ||
+      !locationRef.current?.value
+    ) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
     mutate(
       {
-        name: NameRef.current?.value!,
-        price: parseFloat(PriceRef.current?.value!) || 0,
-        location: LocationRef.current?.value!,
-        description: DescriptionRef.current?.value! || "",
+        name: nameRef.current.value,
+        price: parseFloat(priceRef.current.value) || 0,
+        location: locationRef.current.value,
+        description: descriptionRef.current?.value || "",
         // @ts-ignore
-        image: file,
-        ranting: parseFloat(RantingRef.current?.value!) || 0,
+        image: selectedImage || undefined,
+        rating: parseFloat(ratingRef.current?.value || "0"),
       },
       {
         onSuccess: () => {
@@ -62,39 +68,36 @@ const page = ({ onImageSelect }: ImageDropUploadProps) => {
         },
       }
     );
-  }
+  };
 
   return (
     <div className="p-5">
       <div className="text-center">
-        <h1 className="font-extrabold  text-red-700 text-3xl">
-          Add Your Stays
-        </h1>
+        <h1 className="font-extrabold text-red-700 text-3xl">Add Your Stays</h1>
         <p className="pt-3 text-gray-600">Add your Stay to your traveller</p>
       </div>
 
-      <div className=" p-5  justify-center items-center  flex   ">
-        <div className=" p-5 w-[50%]  flex flex-col gap-8">
+      <div className="p-5 justify-center items-center flex">
+        <div className="p-5 w-[50%] flex flex-col gap-8">
           <div className="gap-4">
             <Label htmlFor="name">Name</Label>
-            <Input ref={NameRef} id="name" />
+            <Input ref={nameRef} id="name" required />
           </div>
-          <div className=" gap-4">
-            <Label htmlFor="location">Localisation</Label>
-            <Input ref={LocationRef} id="location" />
+          <div className="gap-4">
+            <Label htmlFor="location">Location</Label>
+            <Input ref={locationRef} id="location" required />
           </div>
-          <div className=" gap-4">
+          <div className="gap-4">
             <Label htmlFor="description">Description</Label>
-            <Input ref={DescriptionRef} id="description" />
+            <Input ref={descriptionRef} id="description" />
           </div>
-
           <div className="gap-4">
             <Label htmlFor="price">Price</Label>
-            <Input ref={PriceRef} id="price" type="number" />
+            <Input ref={priceRef} id="price" type="number" required />
           </div>
           <div className="gap-4">
-            <Label htmlFor="ranting">Ranting</Label>
-            <Input ref={RantingRef} id="ranting" type="number" />
+            <Label htmlFor="rating">Rating</Label>
+            <Input ref={ratingRef} id="rating" type="number" />
           </div>
 
           <div
@@ -103,15 +106,13 @@ const page = ({ onImageSelect }: ImageDropUploadProps) => {
             className="border-2 border-dashed border-gray-300 rounded-lg p-6 flex items-center justify-center cursor-pointer hover:border-blue-500 transition"
           >
             <input
-              ref={ImageRef}
               id="image"
-              className="col-span-3"
               type="file"
               accept="image/*"
-              //@ts-ignore
-              onChange={(e) => setFile(e.target.files?.[0])}
+              onChange={handleFileChange}
+              hidden
             />
-            <label>
+            <label htmlFor="image" className="cursor-pointer">
               {selectedImage ? (
                 <img
                   src={URL.createObjectURL(selectedImage)}
@@ -126,9 +127,10 @@ const page = ({ onImageSelect }: ImageDropUploadProps) => {
               )}
             </label>
           </div>
+
           <Button
-            className="bg-green-600   w-full text-lg font-bold"
-            onClick={() => Submit()}
+            className="bg-green-600 w-full text-lg font-bold"
+            onClick={handleSubmit}
           >
             Add Stay
           </Button>
@@ -138,4 +140,4 @@ const page = ({ onImageSelect }: ImageDropUploadProps) => {
   );
 };
 
-export default page;
+export default Page;
