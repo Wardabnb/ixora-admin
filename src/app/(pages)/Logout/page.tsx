@@ -1,11 +1,15 @@
 "use client";
 
+import { useEffect } from "react";
 import { redirect } from "next/navigation";
-import React from "react";
 
 const Page = () => {
-  localStorage.removeItem("admin");
-  redirect("/login");
+  useEffect(() => {
+    // Cette fonction sera exécutée uniquement côté client
+    localStorage.removeItem("admin");
+    redirect("/login");
+  }, []); // Le tableau vide [] garantit que l'effet ne sera exécuté qu'une seule fois après le rendu initial
+
   return <div></div>;
 };
 
