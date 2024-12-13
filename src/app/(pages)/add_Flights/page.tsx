@@ -41,6 +41,7 @@ const Page = () => {
         price: parseFloat(PriceRef.current?.value!) || 0,
         from: FromRef.current?.value!,
         to: ToRef.current?.value! || "",
+        // @ts-ignore
         image: file!, // Ensure file is provided
         departure: DepartureRef.current?.value!,
         arrive: ArriveRef.current?.value!,
@@ -99,6 +100,7 @@ const Page = () => {
               className="col-span-3"
               type="file"
               accept="image/*"
+              //@ts-ignore
               onChange={(e) => setFile(e.target.files?.[0])}
             />
             <label>
