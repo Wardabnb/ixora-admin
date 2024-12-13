@@ -32,11 +32,11 @@ import { useDeleteStays } from "@/api/stays/delete";
 type Props = {};
 
 const page = (props: Props) => {
-  const searchParams = useSearchParams();
-  const currentPage = searchParams.get("page") || "1";
-  const { data: stays } = useGetStays(currentPage);
+  // const searchParams = useSearchParams();
+  // const currentPage = searchParams.get("page") || "1";
+  const { data: stays } = useGetStays();
 
-  const numPages = 10;
+  // const numPages = 10;
   const { mutate } = useEditStays();
   const { mutate: stayD } = useDeleteStays();
   const NameRef = useRef<HTMLInputElement | null>(null);
@@ -207,7 +207,7 @@ const page = (props: Props) => {
           ))}
         </div>
       </ScrollArea>
-      <Pagination className="mt-4">
+      {/* <Pagination className="mt-4">
         <PaginationContent>
           <PaginationItem>
             <PaginationPrevious
@@ -230,7 +230,7 @@ const page = (props: Props) => {
             />
           </PaginationItem>
         </PaginationContent>
-      </Pagination>
+      </Pagination> */}
     </div>
   );
 };

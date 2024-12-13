@@ -6,6 +6,6 @@ export function useGetFlights() {
     queryKey: ["flights"],
 
     queryFn: async () =>
-      (await axios.get("http://localhost:4000/flights?page=")).data,
+      (await axios.get("http://localhost:4000/flights")).data,
   });
 }
