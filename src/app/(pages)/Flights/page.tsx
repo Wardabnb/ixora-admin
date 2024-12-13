@@ -43,8 +43,10 @@ const page = (props: Props) => {
     mutate({
       FlightId: flight._id,
       airplane: AirplaneRef.current?.value!,
+      // @ts-ignore
       price: PriceRef.current?.value!,
       departure: DepartureRef.current?.value!,
+      // @ts-ignore
       image: file,
       arrive: ArriveRef.current?.value!,
       from: FromRef.current?.value!,

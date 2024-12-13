@@ -8,10 +8,9 @@ const Page = () => {
 
   useEffect(() => {
     // Ensure this code only runs on the client side
-    if (typeof window !== "undefined") {
-      localStorage.removeItem("admin");
-      router.push("/login");
-    }
+
+    localStorage.removeItem("admin");
+    router.push("/login");
   }, []); // Run once on component mount
 
   return <div>Redirecting...</div>;
