@@ -23,9 +23,7 @@ import { useDeleteFlights } from "@/api/flights/delete";
 type Props = {};
 
 const page = (props: Props) => {
-  const searchParams = useSearchParams();
-  const currentPage = searchParams.get("page") || "1";
-  const { data: flights } = useGetFlights(currentPage);
+  const { data: flights } = useGetFlights();
 
   const AirplaneRef = useRef<HTMLInputElement | null>(null);
   const PriceRef = useRef<HTMLInputElement | null>(null);
