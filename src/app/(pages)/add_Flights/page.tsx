@@ -1,15 +1,12 @@
 "use client";
+
 import React, { useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useAddFlightsMutation } from "@/api/flights/add";
 
-type Props = {};
-type ImageDropUploadProps = {
-  onImageSelect: (file: File | null) => void;
-};
-const page = ({ onImageSelect }: ImageDropUploadProps) => {
+const Page = () => {
   const { mutate } = useAddFlightsMutation();
 
   const AirplaneRef = useRef<HTMLInputElement | null>(null);
@@ -21,20 +18,22 @@ const page = ({ onImageSelect }: ImageDropUploadProps) => {
   const ArriveRef = useRef<HTMLInputElement | null>(null);
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
+
   const handleDrop = (event: React.DragEvent) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     if (file && file.type.startsWith("image/")) {
       setSelectedImage(file);
-      onImageSelect(file); // Pass image to parent
     } else {
       alert("Please drop an image file.");
     }
   };
-  const [file, setFile] = useState<File | null>(null);
+
   const handleDragOver = (event: React.DragEvent) => {
     event.preventDefault();
   };
+
   async function Submit() {
     mutate(
       {
@@ -42,20 +41,17 @@ const page = ({ onImageSelect }: ImageDropUploadProps) => {
         price: parseFloat(PriceRef.current?.value!) || 0,
         from: FromRef.current?.value!,
         to: ToRef.current?.value! || "",
-        // @ts-ignore
-        image: file,
-        //   @ts-ignore
+        image: file!, // Ensure file is provided
         departure: DepartureRef.current?.value!,
-        //   @ts-ignore
         arrive: ArriveRef.current?.value!,
       },
       {
         onSuccess: () => {
-          console.log("Stay added successfully");
+          console.log("Flight added successfully");
           document.location.reload();
         },
         onError: (error) => {
-          console.error("Error adding stay:", error);
+          console.error("Error adding flight:", error);
         },
       }
     );
@@ -64,27 +60,26 @@ const page = ({ onImageSelect }: ImageDropUploadProps) => {
   return (
     <div className="p-5">
       <div className="text-center">
-        <h1 className="font-extrabold  text-red-700 text-3xl">
+        <h1 className="font-extrabold text-red-700 text-3xl">
           Add Your Flights
         </h1>
-        <p className="pt-3 text-gray-600">Add your Flight to your traveller</p>
+        <p className="pt-3 text-gray-600">Add your flight to your traveler</p>
       </div>
 
-      <div className="   justify-center items-center  flex   ">
-        <div className=" w-[50%]  flex flex-col gap-8">
+      <div className="justify-center items-center flex">
+        <div className="w-[50%] flex flex-col gap-8">
           <div className="gap-4">
             <Label htmlFor="airplane">Airplane</Label>
             <Input ref={AirplaneRef} id="airplane" />
           </div>
-          <div className=" gap-4">
+          <div className="gap-4">
             <Label htmlFor="from">From</Label>
             <Input ref={FromRef} id="from" />
           </div>
-          <div className=" gap-4">
+          <div className="gap-4">
             <Label htmlFor="to">To</Label>
             <Input ref={ToRef} id="to" />
           </div>
-
           <div className="gap-4">
             <Label htmlFor="departure">Departure</Label>
             <Input ref={DepartureRef} id="departure" type="text" />
@@ -93,7 +88,6 @@ const page = ({ onImageSelect }: ImageDropUploadProps) => {
             <Label htmlFor="arrive">Arrive</Label>
             <Input ref={ArriveRef} id="arrive" type="text" />
           </div>
-
           <div
             onDrop={handleDrop}
             onDragOver={handleDragOver}
@@ -105,7 +99,6 @@ const page = ({ onImageSelect }: ImageDropUploadProps) => {
               className="col-span-3"
               type="file"
               accept="image/*"
-              //@ts-ignore
               onChange={(e) => setFile(e.target.files?.[0])}
             />
             <label>
@@ -129,10 +122,10 @@ const page = ({ onImageSelect }: ImageDropUploadProps) => {
           </div>
 
           <Button
-            className="bg-green-600   w-full text-lg font-bold"
-            onClick={() => Submit()}
+            className="bg-green-600 w-full text-lg font-bold"
+            onClick={Submit}
           >
-            Add Stay
+            Add Flight
           </Button>
         </div>
       </div>
@@ -140,4 +133,4 @@ const page = ({ onImageSelect }: ImageDropUploadProps) => {
   );
 };
 
-export default page;
+export default Page;
