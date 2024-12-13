@@ -19,13 +19,7 @@ const page = ({ onImageSelect }: ImageDropUploadProps) => {
   const FromRef = useRef<HTMLInputElement | null>(null);
   const ToRef = useRef<HTMLInputElement | null>(null);
   const ArriveRef = useRef<HTMLInputElement | null>(null);
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    if (file) {
-      setSelectedImage(file);
-      onImageSelect(file); // Pass image to parent
-    }
-  };
+
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const handleDrop = (event: React.DragEvent) => {
     event.preventDefault();
